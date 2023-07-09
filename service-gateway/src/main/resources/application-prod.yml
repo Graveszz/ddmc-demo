@@ -1,0 +1,64 @@
+server:
+  port: 8200
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: service-acl
+          uri: lb://service-acl
+          predicates:
+            - Path=/*/acl/**
+
+        - id: service-sys
+          uri: lb://service-sys
+          predicates:
+            - Path=/*/sys/**
+
+        - id: service-product
+          uri: lb://service-product
+          predicates:
+            - Path=/*/product/**
+
+        - id: service-activity       #服务名
+          uri: lb://service-activity
+          predicates:
+            - Path=/*/activity/**
+
+        - id: service-search
+          uri: lb://service-search
+          predicates:
+            - Path=/*/search/**
+
+        - id: service-user
+          uri: lb://service-user
+          predicates:
+            - Path=/*/user/**
+
+        #以下服务在另一台主机上
+
+        - id: service-home
+          uri: http://123.249.40.89:8206
+          predicates:
+            - Path=/*/home/**
+
+        - id: service-cart
+          # uri: lb://service-cart
+          uri: http://123.249.40.89:8207
+          predicates:
+            - Path=/*/cart/**
+
+        - id: service-order
+          # uri: lb://service-order
+          uri: http://123.249.40.89:8209
+          predicates:
+            - Path=/*/order/**
+
+        - id: service-payment
+          # uri: lb://service-payment
+          uri: http://123.249.40.89:8210
+          predicates:
+            - Path=/*/payment/**
